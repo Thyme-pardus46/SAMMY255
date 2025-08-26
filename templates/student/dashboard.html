@@ -1,0 +1,264 @@
+{% extends "base.html" %}
+
+{% block title %}Student Dashboard - Field Supervision Management System{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h2 class="mb-0">Welcome, {{ current_user.first_name }}!</h2>
+                    <p class="text-muted mb-0">{{ current_user.course }} - {{ current_user.university }}</p>
+                </div>
+                <div>
+                    <a href="{{ url_for('student.apply') }}" class="btn btn-primary">
+                        <i class="bi bi-plus-circle"></i> New Application
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="row mb-4">
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card text-white bg-primary">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h4 class="mb-0">{{ stats.total_applications }}</h4>
+                            <p class="mb-0">Total Applications</p>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="bi bi-file-earmark-text" style="font-size: 2rem;"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card text-white bg-warning">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h4 class="mb-0">{{ stats.pending_applications }}</h4>
+                            <p class="mb-0">Pending</p>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="bi bi-clock" style="font-size: 2rem;"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card text-white bg-success">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h4 class="mb-0">{{ stats.in_progress_applications }}</h4>
+                            <p class="mb-0">In Progress</p>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="bi bi-arrow-right-circle" style="font-size: 2rem;"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card text-white bg-info">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h4 class="mb-0">{{ stats.total_reports }}</h4>
+                            <p class="mb-0">Reports Submitted</p>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="bi bi-journal-text" style="font-size: 2rem;"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Applications -->
+        <div class="col-lg-8 mb-4">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">
+                        <i class="bi bi-file-earmark-text"></i> Recent Applications
+                    </h5>
+                    <a href="{{ url_for('student.applications') }}" class="btn btn-sm btn-outline-primary">
+                        View All
+                    </a>
+                </div>
+                <div class="card-body">
+                    {% if applications %}
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Type</th>
+                                        <th>Location</th>
+                                        <th>Status</th>
+                                        <th>Applied</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for application in applications[:5] %}
+                                    <tr>
+                                        <td>{{ application.application_type|title|replace('_', ' ') }}</td>
+                                        <td>{{ application.preferred_location }}</td>
+                                        <td>
+                                            <span class="badge bg-{{ 'warning' if application.status == 'pending' else 'success' if application.status == 'approved' else 'info' if application.status == 'in_progress' else 'secondary' if application.status == 'completed' else 'danger' }}">
+                                                {{ application.status|title|replace('_', ' ') }}
+                                            </span>
+                                        </td>
+                                        <td>{{ application.applied_at.strftime('%b %d, %Y') }}</td>
+                                        <td>
+                                            <a href="{{ url_for('student.view_application', application_id=application.id) }}" class="btn btn-sm btn-outline-primary">
+                                                <i class="bi bi-eye"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="text-center py-4">
+                            <i class="bi bi-file-earmark-plus text-muted" style="font-size: 3rem;"></i>
+                            <h5 class="text-muted mt-2">No Applications Yet</h5>
+                            <p class="text-muted">Start by submitting your first field placement application.</p>
+                            <a href="{{ url_for('student.apply') }}" class="btn btn-primary">
+                                <i class="bi bi-plus-circle"></i> Submit Application
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions & Notifications -->
+        <div class="col-lg-4">
+            <!-- Quick Actions -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="bi bi-lightning-fill"></i> Quick Actions
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <a href="{{ url_for('student.apply') }}" class="btn btn-primary">
+                            <i class="bi bi-plus-circle"></i> Submit New Application
+                        </a>
+                        <a href="{{ url_for('student.submit_report') }}" class="btn btn-success">
+                            <i class="bi bi-journal-plus"></i> Submit Report
+                        </a>
+                        <a href="{{ url_for('student.reports') }}" class="btn btn-info">
+                            <i class="bi bi-journal-text"></i> View Reports
+                        </a>
+                        <a href="{{ url_for('student.profile') }}" class="btn btn-secondary">
+                            <i class="bi bi-person"></i> Update Profile
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Notifications -->
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">
+                        <i class="bi bi-bell"></i> Recent Notifications
+                    </h5>
+                    <a href="{{ url_for('student.notifications') }}" class="btn btn-sm btn-outline-primary">
+                        View All
+                    </a>
+                </div>
+                <div class="card-body">
+                    {% if notifications %}
+                        {% for notification in notifications %}
+                        <div class="d-flex align-items-start mb-3 {% if not notification.is_read %}bg-light p-2 rounded{% endif %}">
+                            <div class="flex-shrink-0 me-2">
+                                <i class="bi bi-{{ 'info-circle' if notification.type == 'info' else 'check-circle' if notification.type == 'success' else 'exclamation-triangle' if notification.type == 'warning' else 'x-circle' }} text-{{ notification.type if notification.type != 'error' else 'danger' }}"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <h6 class="mb-1">{{ notification.title }}</h6>
+                                <p class="mb-1 small">{{ notification.message }}</p>
+                                <small class="text-muted">{{ notification.created_at.strftime('%b %d, %H:%M') }}</small>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="text-center py-3">
+                            <i class="bi bi-bell-slash text-muted" style="font-size: 2rem;"></i>
+                            <p class="text-muted mt-2 mb-0">No notifications</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Reports -->
+    {% if recent_reports %}
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">
+                        <i class="bi bi-journal-check"></i> Recent Reports
+                    </h5>
+                    <a href="{{ url_for('student.reports') }}" class="btn btn-sm btn-outline-primary">
+                        View All Reports
+                    </a>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        {% for report in recent_reports %}
+                        <div class="col-md-6 col-lg-4 mb-3">
+                            <div class="card h-100 border-left-{{ 'success' if report.status == 'approved' else 'warning' if report.status == 'submitted' else 'danger' }}">
+                                <div class="card-body">
+                                    <h6 class="card-title">{{ report.title }}</h6>
+                                    <p class="card-text small text-muted">
+                                        {{ report.report_type|title }} Report
+                                        {% if report.week_number %} - Week {{ report.week_number }}{% endif %}
+                                    </p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="badge bg-{{ 'success' if report.status == 'approved' else 'warning' if report.status == 'submitted' else 'danger' }}">
+                                            {{ report.status|title|replace('_', ' ') }}
+                                        </span>
+                                        <small class="text-muted">{{ report.submitted_at.strftime('%b %d') }}</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.border-left-success {
+    border-left: 4px solid #28a745 !important;
+}
+.border-left-warning {
+    border-left: 4px solid #ffc107 !important;
+}
+.border-left-danger {
+    border-left: 4px solid #dc3545 !important;
+}
+</style>
+{% endblock %}
