@@ -1,0 +1,254 @@
+{% extends "base.html" %}
+
+{% block title %}Welcome - Field Supervision Management System{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="hero-section bg-primary text-white py-5 mb-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h1 class="display-4 fw-bold mb-4">
+                    <i class="bi bi-mortarboard-fill"></i> Field Supervision Management
+                </h1>
+                <p class="lead mb-4">
+                    Streamline student field placements, internships, and teaching practice supervision across African universities and colleges.
+                </p>
+                <div class="d-flex gap-3 flex-wrap">
+                    {% if not current_user.is_authenticated %}
+                        <a href="{{ url_for('auth.register') }}" class="btn btn-light btn-lg">
+                            <i class="bi bi-person-plus"></i> Get Started
+                        </a>
+                        <a href="{{ url_for('auth.login') }}" class="btn btn-outline-light btn-lg">
+                            <i class="bi bi-box-arrow-in-right"></i> Sign In
+                        </a>
+                    {% else %}
+                        <a href="{{ url_for('dashboard') }}" class="btn btn-light btn-lg">
+                            <i class="bi bi-speedometer2"></i> Go to Dashboard
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-lg-6 text-center">
+                <div class="hero-image">
+                    <i class="bi bi-people-fill" style="font-size: 8rem; opacity: 0.8;"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Features Section -->
+<div class="container mb-5">
+    <div class="row text-center mb-5">
+        <div class="col-12">
+            <h2 class="fw-bold mb-3">Comprehensive Field Supervision Solution</h2>
+            <p class="text-muted">Everything you need to manage student field placements effectively</p>
+        </div>
+    </div>
+    
+    <div class="row g-4">
+        <!-- Student Features -->
+        <div class="col-md-6 col-lg-3">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body text-center p-4">
+                    <div class="feature-icon text-primary mb-3">
+                        <i class="bi bi-person-circle" style="font-size: 3rem;"></i>
+                    </div>
+                    <h5 class="card-title">For Students</h5>
+                    <p class="card-text text-muted">
+                        Apply for field placements, track application status, submit reports, and communicate with supervisors.
+                    </p>
+                    <ul class="list-unstyled text-start small">
+                        <li><i class="bi bi-check-circle text-success"></i> Online applications</li>
+                        <li><i class="bi bi-check-circle text-success"></i> Progress tracking</li>
+                        <li><i class="bi bi-check-circle text-success"></i> Report submission</li>
+                        <li><i class="bi bi-check-circle text-success"></i> Notifications</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Supervisor Features -->
+        <div class="col-md-6 col-lg-3">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body text-center p-4">
+                    <div class="feature-icon text-success mb-3">
+                        <i class="bi bi-person-badge" style="font-size: 3rem;"></i>
+                    </div>
+                    <h5 class="card-title">For Supervisors</h5>
+                    <p class="card-text text-muted">
+                        Monitor assigned students, review reports, track attendance, and provide feedback and evaluations.
+                    </p>
+                    <ul class="list-unstyled text-start small">
+                        <li><i class="bi bi-check-circle text-success"></i> Student monitoring</li>
+                        <li><i class="bi bi-check-circle text-success"></i> Report reviews</li>
+                        <li><i class="bi bi-check-circle text-success"></i> Attendance tracking</li>
+                        <li><i class="bi bi-check-circle text-success"></i> Evaluations</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Admin Features -->
+        <div class="col-md-6 col-lg-3">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body text-center p-4">
+                    <div class="feature-icon text-warning mb-3">
+                        <i class="bi bi-gear-fill" style="font-size: 3rem;"></i>
+                    </div>
+                    <h5 class="card-title">For Administrators</h5>
+                    <p class="card-text text-muted">
+                        Manage applications, assign supervisors, oversee placements, and generate comprehensive reports.
+                    </p>
+                    <ul class="list-unstyled text-start small">
+                        <li><i class="bi bi-check-circle text-success"></i> Application management</li>
+                        <li><i class="bi bi-check-circle text-success"></i> Supervisor assignment</li>
+                        <li><i class="bi bi-check-circle text-success"></i> Organization management</li>
+                        <li><i class="bi bi-check-circle text-success"></i> Reporting & analytics</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Organization Features -->
+        <div class="col-md-6 col-lg-3">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body text-center p-4">
+                    <div class="feature-icon text-info mb-3">
+                        <i class="bi bi-building" style="font-size: 3rem;"></i>
+                    </div>
+                    <h5 class="card-title">For Organizations</h5>
+                    <p class="card-text text-muted">
+                        Offer placement opportunities, review applications, and evaluate student performance.
+                    </p>
+                    <ul class="list-unstyled text-start small">
+                        <li><i class="bi bi-check-circle text-success"></i> Placement listings</li>
+                        <li><i class="bi bi-check-circle text-success"></i> Application reviews</li>
+                        <li><i class="bi bi-check-circle text-success"></i> Student evaluations</li>
+                        <li><i class="bi bi-check-circle text-success"></i> Performance tracking</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Statistics Section -->
+<div class="bg-light py-5 mb-5">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-md-3 col-sm-6 mb-4">
+                <div class="stat-card">
+                    <i class="bi bi-people-fill text-primary" style="font-size: 3rem;"></i>
+                    <h3 class="fw-bold text-primary mt-2">500+</h3>
+                    <p class="text-muted">Active Students</p>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 mb-4">
+                <div class="stat-card">
+                    <i class="bi bi-person-badge-fill text-success" style="font-size: 3rem;"></i>
+                    <h3 class="fw-bold text-success mt-2">100+</h3>
+                    <p class="text-muted">Supervisors</p>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 mb-4">
+                <div class="stat-card">
+                    <i class="bi bi-building-fill text-warning" style="font-size: 3rem;"></i>
+                    <h3 class="fw-bold text-warning mt-2">50+</h3>
+                    <p class="text-muted">Partner Organizations</p>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 mb-4">
+                <div class="stat-card">
+                    <i class="bi bi-mortarboard-fill text-info" style="font-size: 3rem;"></i>
+                    <h3 class="fw-bold text-info mt-2">25+</h3>
+                    <p class="text-muted">Universities</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- How It Works Section -->
+<div class="container mb-5">
+    <div class="row text-center mb-5">
+        <div class="col-12">
+            <h2 class="fw-bold mb-3">How It Works</h2>
+            <p class="text-muted">Simple steps to get started with field supervision</p>
+        </div>
+    </div>
+    
+    <div class="row g-4">
+        <div class="col-md-4 text-center">
+            <div class="step-number bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                <span class="fw-bold">1</span>
+            </div>
+            <h5>Register & Create Profile</h5>
+            <p class="text-muted">Sign up and complete your profile with relevant information based on your role.</p>
+        </div>
+        <div class="col-md-4 text-center">
+            <div class="step-number bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                <span class="fw-bold">2</span>
+            </div>
+            <h5>Apply or Offer Placements</h5>
+            <p class="text-muted">Students apply for placements while organizations offer opportunities.</p>
+        </div>
+        <div class="col-md-4 text-center">
+            <div class="step-number bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                <span class="fw-bold">3</span>
+            </div>
+            <h5>Track & Supervise</h5>
+            <p class="text-muted">Monitor progress, submit reports, and receive feedback throughout the placement.</p>
+        </div>
+    </div>
+</div>
+
+<!-- CTA Section -->
+<div class="bg-primary text-white py-5">
+    <div class="container text-center">
+        <h2 class="fw-bold mb-3">Ready to Get Started?</h2>
+        <p class="lead mb-4">Join thousands of students, supervisors, and organizations across Africa</p>
+        {% if not current_user.is_authenticated %}
+            <a href="{{ url_for('auth.register') }}" class="btn btn-light btn-lg me-3">
+                <i class="bi bi-person-plus"></i> Register Now
+            </a>
+            <a href="{{ url_for('auth.login') }}" class="btn btn-outline-light btn-lg">
+                <i class="bi bi-box-arrow-in-right"></i> Sign In
+            </a>
+        {% else %}
+            <a href="{{ url_for('dashboard') }}" class="btn btn-light btn-lg">
+                <i class="bi bi-speedometer2"></i> Go to Dashboard
+            </a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.hero-section {
+    background: linear-gradient(135deg, #0d6efd, #0056b3);
+}
+
+.feature-icon {
+    transition: transform 0.3s ease;
+}
+
+.card:hover .feature-icon {
+    transform: scale(1.1);
+}
+
+.stat-card {
+    transition: transform 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+}
+
+.step-number {
+    font-size: 1.5rem;
+}
+</style>
+{% endblock %}
